@@ -7,6 +7,7 @@ install_logstash:
 
 install_elasticsearch:
 	brew install elasticsearch
+	cat etc/elasticsearch/elasticsearch.yml >> /usr/local/etc/elasticsearch/elasticsearch.yml
 
 install_logcourier:
 	cd vendor/log-courier && make
@@ -23,9 +24,12 @@ elasticsearch:
 	launchctl load ~/Library/LaunchAgents/homebrew.mxcl.elasticsearch.plist
 
 logstash:
-	logstash agent -f etc/logstash/logstash.conf
+	logstash agent -f etc/logstash/logstash.conf &
 
-run: elasticsearch logstash
+kibana:
+	logstash web & open "http://kibana.local:9292/index.html#/dashboard/file/logstash.json"
+
+run: elasticsearch logstash kibana
 
 test:
 	run
