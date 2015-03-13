@@ -24,7 +24,8 @@ elasticsearch:
 	launchctl load ~/Library/LaunchAgents/homebrew.mxcl.elasticsearch.plist
 
 logstash:
-	logstash agent -f etc/logstash/logstash.conf &
+	ps aux | grep etc/logstash/logstash.conf | grep -ve grep | grep -o "[0-9]*" | head -1 | xargs kill -9
+	logstash agent -v -f etc/logstash/logstash.conf --log logstash.log &
 
 kibana:
 	logstash web & open "http://kibana.local:9292/index.html#/dashboard/file/logstash.json"
