@@ -32,5 +32,9 @@ kibana:
 
 run: elasticsearch logstash kibana
 
-test:
-	run
+lumberjack:
+	bin/logstash-forwarder -config etc/logstash-forwarder
+
+courier:
+	bin/log-courier -config etc/logstash-forwarder/config.json
+
