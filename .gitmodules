@@ -1,0 +1,6 @@
+[submodule "vendor/log-courier"]
+	path = vendor/log-courier
+	url = https://github.com/driskell/log-courier
+[submodule "vendor/logstash-forwarder"]
+	path = vendor/logstash-forwarder
+	url = https://github.com/elastic/logstash-forwarder
