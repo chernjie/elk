@@ -8,6 +8,7 @@ install_logstash:
 install_elasticsearch:
 	brew install elasticsearch
 	cat etc/elasticsearch/elasticsearch.yml >> /usr/local/etc/elasticsearch/elasticsearch.yml
+	test -f ~/Library/LaunchAgents/homebrew.mxcl.elasticsearch.plist || ln -sfv /usr/local/opt/elasticsearch/*.plist ~/Library/LaunchAgents
 
 install_logcourier:
 	cd vendor/log-courier && make
@@ -20,12 +21,12 @@ etchosts:
 	cat etc/hosts
 
 elasticsearch:
-	test -f ~/Library/LaunchAgents/homebrew.mxcl.elasticsearch.plist || ln -sfv /usr/local/opt/elasticsearch/*.plist ~/Library/LaunchAgents
+	launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.elasticsearch.plist
 	launchctl load ~/Library/LaunchAgents/homebrew.mxcl.elasticsearch.plist
 
 logstash:
 	ps aux | grep etc/logstash/logstash.conf | grep -ve grep | grep -o "[0-9]*" | head -1 | xargs kill -9
-	logstash agent -v -f etc/logstash/logstash.conf --log logstash.log &
+	logstash agent --verbose -f etc/logstash/logstash.conf --log logstash.log &
 
 kibana:
 	logstash web & open "http://kibana.local:9292/index.html#/dashboard/file/logstash.json"
