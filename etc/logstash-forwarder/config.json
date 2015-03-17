@@ -2,7 +2,6 @@
   "network": {
     "servers": [ "logstash.local:5043" ],
     "timeout": 15,
-    "transport": "tls",
     "ssl key": "etc/ssl/private/selfsigned.key",
     "ssl ca": "etc/ssl/certs/selfsigned.crt"
   },
@@ -19,12 +18,10 @@
        "fields": { "type": "nginx-access" }
     },
     {
-       "paths":  [ "/var/log/magento/elktest.log" ],
-       "fields": { "type": "magento" }
-    },
-    {
-       "paths":  [ "/var/log/magento/system.log" ],
-       "fields": { "type": "magento" }
+      "paths":  [ "/var/log/magento/*.log" ],
+      "fields": {
+        "type": "magento"
+      }
     }
    ]
 }
