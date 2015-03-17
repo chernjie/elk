@@ -25,13 +25,13 @@ elasticsearch:
 	launchctl load ~/Library/LaunchAgents/homebrew.mxcl.elasticsearch.plist
 
 logstash:
-	ps aux | grep etc/logstash/logstash.conf | grep -ve grep | grep -o "[0-9]*" | head -1 | xargs kill -9
-	logstash agent --verbose -f etc/logstash/logstash.conf --log logstash.log &
+	ps aux | grep etc/logstash | grep java | grep -ve grep | grep -o "[0-9]*" | head -1 | xargs kill -9
+	logstash agent --verbose --config etc/logstash --log logstash.log
 
 kibana:
 	logstash web & open "http://kibana.local:9292/index.html#/dashboard/file/logstash.json"
 
-run: elasticsearch logstash kibana
+run: elasticsearch kibana logstash
 
 lumberjack:
 	bin/logstash-forwarder -config etc/logstash-forwarder
