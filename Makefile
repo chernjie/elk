@@ -14,7 +14,7 @@ lumberjack_docker:
 		willdurand/logstash-forwarder
 
 elk:
-	docker-compose up -d --file docker-compose-elk.yml
+	docker-compose --file docker-compose-elk.yml up -d
 
 build: build_logcourier build_forwarder etchosts
 

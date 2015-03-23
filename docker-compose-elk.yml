@@ -9,6 +9,7 @@ logstash:
     - ./etc/ssl:/etc/ssl
   links:
     - elasticsearch:elasticsearch.local
+  restart: "on-failure:10"
 elasticsearch:
   image: ehazlett/elasticsearch
   ports:
@@ -17,3 +18,4 @@ elasticsearch:
   volumes:
     - ./etc/elasticsearch:/opt/elasticsearch/config
     - ./etc/elasticsearch/data:/opt/elasticsearch/data
+  restart: "on-failure:10"
