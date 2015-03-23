@@ -18,8 +18,15 @@
        "fields": { "type": "nginx-access" }
     },
     {
-      "paths":  [ "/var/log/magento/*.log", "/var/log/magento/*.log.gz" ],
-      "dead time": "8760h",
+       "paths":  [ "/var/log/httpd/*-access_log" ],
+       "fields": { "type": "apache" }
+    },
+    {
+       "paths":  [ "/var/log/httpd/*-error_log" ],
+       "fields": { "type": "apacheerror" }
+    },
+    {
+      "paths":  [ "/var/log/magento/*.log"],
       "fields": {
         "type": "magento"
       }
