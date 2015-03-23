@@ -29,7 +29,7 @@ etchosts:
 	cat etc/hosts
 
 lumberjack:
-	bin/logstash-forwarder -config etc/logstash-forwarder
+	nohup bin/logstash-forwarder -config etc/logstash-forwarder &
 
 courier:
 	bin/log-courier -config etc/logstash-forwarder/config.json
