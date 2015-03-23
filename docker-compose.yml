@@ -1,0 +1,6 @@
+ logstashforwarder:
+  image: willdurand/logstash-forwarder
+  volumes:
+    - ./etc/ssl:/etc/ssl
+    - ./etc/logstash-forwarder:/etc/logstash-forwarder
+    - /var/log:/var/log
