@@ -1,0 +1,19 @@
+logstash:
+  build: .
+  # image: localhost:5000/ppdg/logstash_v2.0
+  ports:
+    - "5043:5043"
+    - "9292:9292"
+  volumes:
+    - ./etc/logstash:/etc/logstash
+    - ./etc/ssl:/etc/ssl
+  links:
+    - elasticsearch:elasticsearch.local
+elasticsearch:
+  image: ehazlett/elasticsearch
+  ports:
+    - "9200:9200"
+    - "9300:9300"
+  volumes:
+    - ./etc/elasticsearch:/opt/elasticsearch/config
+    - ./etc/elasticsearch/data:/opt/elasticsearch/data
