@@ -7,6 +7,7 @@ logstash:
   volumes:
     - ./etc/logstash:/etc/logstash
     - ./etc/ssl:/etc/ssl
+    - /var/log/logstash:/var/log
   links:
     - elasticsearch:elasticsearch.local
   restart: "on-failure:10"
@@ -18,4 +19,5 @@ elasticsearch:
   volumes:
     - ./etc/elasticsearch:/opt/elasticsearch/config
     - ./etc/elasticsearch/data:/opt/elasticsearch/data
+    - /var/log/elasticsearch:/opt/elasticsearch/logs
   restart: "on-failure:10"
