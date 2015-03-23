@@ -1,19 +1,27 @@
-all: install
+all: lumberjack_docker
 
-run: elk install
+run: elk lumberjack_docker
 
-install:
-	docker-compose up -d
+lumberjack_docker:
+	# docker-compose does not support --add-hosts yet, so run it manually
+	# https://github.com/docker/compose/pull/848
+	# docker-compose up -d
+	docker run -dit --name logstashforwarder \
+		-v ./etc/ssl:/etc/ssl \
+		-v ./etc/logstash-forwarder:/etc/logstash-forwarder \
+		-v /var/log:/var/log \
+		--add-hosts logstash.local:${LOGSTASH_IP:-127.0.0.1}
+		willdurand/logstash-forwarder
 
 elk:
 	docker-compose up -d --file docker-compose-elk.yml
 
-build: install_logcourier install_forwarder etchosts
+build: build_logcourier build_forwarder etchosts
 
-install_logcourier:
+build_logcourier:
 	cd vendor/log-courier && make
 
-install_forwarder:
+build_forwarder:
 	cd vendor/logstash-forwarder && make
 
 etchosts:

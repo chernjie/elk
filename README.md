@@ -2,14 +2,14 @@
 
 ElasticSearch, Logstash, Kibana and Lumberjack (Logstash-Forwarder)
 
-### To run ELK
+### To run Lumberjack
 
 ```bash
 $ make
 ```
 
-### To run Lumberjack
+### To run ELK
 
 ```bash
-$ make lumberjack
+$ make elk
 ```
