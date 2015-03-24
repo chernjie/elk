@@ -1,16 +1,18 @@
+LOGSTASH_IP=$LOGSTASH_IP
+
 all: lumberjack_docker
 
 run: elk lumberjack_docker
 
 lumberjack_docker:
-	# docker-compose does not support --add-hosts yet, so run it manually
+	# docker-compose does not support --add-host yet, so run it manually
 	# https://github.com/docker/compose/pull/848
 	# docker-compose up -d
 	docker run -dit --name logstashforwarder \
-		-v ./etc/ssl:/etc/ssl \
-		-v ./etc/logstash-forwarder:/etc/logstash-forwarder \
+		-v $(pwd)/etc/ssl:/etc/ssl \
+		-v $(pwd)/etc/logstash-forwarder:/etc/logstash-forwarder \
 		-v /var/log:/var/log \
-		--add-hosts logstash.local:${LOGSTASH_IP:-127.0.0.1}
+		--add-host=logstash.local:${LOGSTASH_IP} \
 		willdurand/logstash-forwarder
 
 elk:
