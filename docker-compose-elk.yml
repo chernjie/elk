@@ -23,6 +23,5 @@ elasticsearch:
   volumes:
     - ./etc/elasticsearch/config:/usr/share/elasticsearch/config
     - ./etc/elasticsearch/data:/usr/share/elasticsearch/data
-    - /var/log/elasticsearch:/usr/share/elasticsearch/logs
   restart: "on-failure:10"
   command: elasticsearch -Des.config=/usr/share/elasticsearch/config/elasticsearch.yml
