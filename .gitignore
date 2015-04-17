@@ -1,3 +1,4 @@
 .logstash-forwarder
 .log-courier
 etc/elasticsearch/data
+vendor
