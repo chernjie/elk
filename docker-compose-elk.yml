@@ -25,3 +25,14 @@ elasticsearch:
     - ./etc/elasticsearch/data:/usr/share/elasticsearch/data
   restart: "on-failure:10"
   command: elasticsearch -Des.config=/usr/share/elasticsearch/config/elasticsearch.yml
+nginx:
+  image: nginx:1.7.11
+  ports:
+    - "80:80"
+    - "443:443"
+  volumes:
+    - ./etc/nginx/conf.d:/etc/nginx/conf.d
+  links:
+    - elasticsearch:elasticsearch.local
+    - kibana:kibana.local
+  restart: "on-failure:10"
