@@ -32,6 +32,7 @@ nginx:
     - "443:443"
   volumes:
     - ./etc/nginx/conf.d:/etc/nginx/conf.d
+    - ./etc/nginx/html:/etc/nginx/html
   links:
     - elasticsearch:elasticsearch.local
     - kibana:kibana.local
