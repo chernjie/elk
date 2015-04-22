@@ -1,6 +1,49 @@
- logstashforwarder:
+logstashforwarder:
   image: willdurand/logstash-forwarder
   volumes:
     - ./etc/ssl:/etc/ssl
     - ./etc/logstash-forwarder:/etc/logstash-forwarder
     - /var/log:/var/log
+
+logstash:
+  image: logstash:1.4.2
+  ports:
+    - "5043:5043"
+  volumes:
+    - ./etc/logstash:/etc/logstash
+    - ./etc/ssl:/etc/ssl
+  links:
+    - elasticsearch:elasticsearch.local
+  restart: "on-failure:10"
+  command: logstash agent --config /etc/logstash
+
+kibana:
+  image: logstash:1.4.2
+  ports:
+    - "9292:9292"
+  restart: "on-failure:10"
+  command: logstash web
+
+elasticsearch:
+  image: elasticsearch:1.4.4
+  ports:
+    - "9200:9200"
+    - "9300:9300"
+  volumes:
+    - ./etc/elasticsearch/config:/usr/share/elasticsearch/config
+    - ./etc/elasticsearch/data:/usr/share/elasticsearch/data
+  restart: "on-failure:10"
+  command: elasticsearch -Des.config=/usr/share/elasticsearch/config/elasticsearch.yml
+
+nginx:
+  image: nginx:1.7.11
+  ports:
+    - "80:80"
+    - "443:443"
+  volumes:
+    - ./etc/nginx/conf.d:/etc/nginx/conf.d
+    - ./etc/nginx/html:/etc/nginx/html
+  links:
+    - elasticsearch:elasticsearch.local
+    - kibana:kibana.local
+  restart: "on-failure:10"

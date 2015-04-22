@@ -10,7 +10,7 @@ test:
 lumberjack_docker:
 	# docker-compose does not support --add-host yet, so run it manually
 	# https://github.com/docker/compose/pull/848
-	# docker-compose up -d
+	# docker-compose up -d logstashforwarder
 	docker run -dit --name logstashforwarder \
 		-v $(pwd)/etc/ssl:/etc/ssl \
 		-v $(pwd)/etc/logstash-forwarder:/etc/logstash-forwarder \
@@ -19,7 +19,7 @@ lumberjack_docker:
 		willdurand/logstash-forwarder
 
 elk:
-	docker-compose --file docker-compose-elk.yml up -d
+	docker-compose up -d logstash kibana elasticsearch nginx
 
 build: build_logcourier build_forwarder etchosts
 
