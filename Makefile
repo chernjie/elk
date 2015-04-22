@@ -34,7 +34,10 @@ etchosts:
 	cat etc/hosts
 
 lumberjack:
-	nohup bin/logstash-forwarder -config etc/logstash-forwarder &
+	nohup bin/logstash-forwarder -config etc/logstash-forwarder \
+		 >> /var/log/lumberjack/lumberjack.log \
+		2>> /var/log/lumberjack/lumberjack-error.log &
+		sleep 2
 
 courier:
 	bin/log-courier -config etc/logstash-forwarder/config.json
