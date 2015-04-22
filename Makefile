@@ -4,6 +4,9 @@ all: lumberjack_docker
 
 run: elk lumberjack_docker
 
+test:
+	bin/runtest.sh
+
 lumberjack_docker:
 	# docker-compose does not support --add-host yet, so run it manually
 	# https://github.com/docker/compose/pull/848
