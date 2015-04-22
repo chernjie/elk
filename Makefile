@@ -34,10 +34,16 @@ etchosts:
 	cat etc/hosts
 
 lumberjack:
+	pgrep logstash-forwarder | xargs kill -9
 	nohup bin/logstash-forwarder -config etc/logstash-forwarder \
 		 >> /var/log/lumberjack/lumberjack.log \
 		2>> /var/log/lumberjack/lumberjack-error.log &
 		sleep 2
+
+setup_lumberjack:
+	cp etc/logrotate.d/lumberjack /etc/logrotate.d/lumberjack
+	mkdir -p /var/log/lumberjack
+	chown lumberjack:lumberjack /var/log/lumberjack
 
 courier:
 	bin/log-courier -config etc/logstash-forwarder/config.json
