@@ -30,7 +30,7 @@ assertValidLogstashConfig () {
 }
 
 assertValidYaml () {
-  ruby -e "require 'yaml'; puts YAML.load_file('""$@""')" > /dev/null
+  js-yaml -t $@ > /dev/null
   ifErrorExit $? "Invalid yaml $@"
 }
 
@@ -44,7 +44,7 @@ main () {
   echo done
 }
 
-require json logstash git ruby
+require json logstash git js-yaml
 case $1 in
   *) main;;
 esac
