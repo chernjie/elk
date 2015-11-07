@@ -1,8 +1,0 @@
-/var/lib/docker/containers/*/*-json.log {
-    dateext
-    daily
-    rotate 365
-    compress
-    delaycompress
-    missingok
-}
