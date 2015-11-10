@@ -1,6 +1,6 @@
-# ELK Stack on Docker
+# ELK Stack
 
-ElasticSearch, Logstash, Kibana and Lumberjack (Logstash-Forwarder), where each process runs as a separate docker container.
+ElasticSearch, Logstash, Kibana and Lumberjack (Logstash-Forwarder).
 
 ### To run Lumberjack (a.k.a. `logstash-forwarder`)
 
@@ -31,8 +31,8 @@ You have to generate your own selfsigned certs. `log-courier` has prepared a sim
 $ cd vendor/log-courier
 $ make selfsigned
 $ cd -
-$ mv vendor/log-courier/selfsigned.crt etc/ssl/certs/selfsigned.crt
-$ mv vendor/log-courier/selfsigned.key etc/ssl/private/selfsigned.key
+$ mv vendor/log-courier/selfsigned.crt etc/ssl/certs/logstash-forwarder.crt
+$ mv vendor/log-courier/selfsigned.key etc/ssl/private/logstash-forwarder.key
 ```
 
 ### To add user to Nginx basic authentication

@@ -1,0 +1,10 @@
+/var/log/logstash-forwarder/*.log /var/log/logstash-forwarder/*.err {
+    dateext
+    daily
+    rotate 365
+    compress
+    delaycompress
+    missingok
+    notifempty
+    copytruncate
+}
