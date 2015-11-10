@@ -1,5 +1,3 @@
-LOGSTASH_IP=$LOGSTASH_IP
-
 run:
 	service logstash restart && \
 	service nginx restart
@@ -49,13 +47,30 @@ LOGSTASH_MAJOR=2.0
 install_logstash:
 	echo "deb http://packages.elasticsearch.org/logstash/${LOGSTASH_MAJOR}/debian stable main" > /etc/apt/sources.list.d/logstash.list
 	apt-get update
-	apt-get install -y --no-install-recommends logstash
+	apt-get install -y default-jdk logstash
+	/opt/logstash/bin/plugin install logstash-input-lumberjack
+	/opt/logstash/bin/plugin install logstash-patterns-core
+	/opt/logstash/bin/plugin install logstash-filter-multiline
+	/opt/logstash/bin/plugin install logstash-filter-date
+	/opt/logstash/bin/plugin install logstash-filter-grok
+	/opt/logstash/bin/plugin install logstash-filter-syslog_pri
+	/opt/logstash/bin/plugin install logstash-output-elasticsearch
+	rm -rf /etc/logstash/conf.d
+	ln -sf $(shell pwd)/etc/logstash /etc/logstash/conf.d
+	ln -sf $(shell pwd)/etc/ssl /etc/logstash/ssl
+	ln -sf conf.d/patterns.d /etc/logstash
 
 ELASTICSEARCH_MAJOR=2.0
 install_elasticsearch:
 	echo "deb http://packages.elasticsearch.org/elasticsearch/${ELASTICSEARCH_MAJOR}/debian stable main" > /etc/apt/sources.list.d/elasticsearch.list
 	apt-get update
-	apt-get install -y elasticsearch
+	apt-get install -y default-jdk elasticsearch
+	ln -sf $(shell pwd)/etc/default/elasticsearch /etc/default/elasticsearch
+	cp $(shell pwd)/etc/elasticsearch/config/elasticsearch.yml /etc/elasticsearch/
+	echo node.max_local_storage_nodes: 1 >> /etc/elasticsearch/elasticsearch.yml
+	echo node.name: $(shell hostname) >> /etc/elasticsearch/elasticsearch.yml
+	read -p "CLUSTER_NAME: " CLUSTER_NAME
+	echo cluster.name: ${CLUSTER_NAME} >> /etc/elasticsearch/elasticsearch.yml
 
 install_elasticsearch_plugin:
 	service elasticsearch start
@@ -68,6 +83,9 @@ install_elasticsearch_plugin:
 install_nginx:
 	apt-get install -y nginx
 	rm /etc/nginx/sites-enabled/default
+	rm -rf /etc/nginx/conf.d /usr/share/nginx/html
+	ln -sf $(shell pwd)/etc/nginx/conf.d /etc/nginx
+	ln -sf $(shell pwd)/etc/nginx/html /usr/share/nginx
 
 install_kibana:
 	rm -rf /usr/share/nginx/html/kibana
@@ -78,14 +96,5 @@ install_kibana:
 	cp etc/nginx/html/config.js /usr/share/nginx/html/kibana/config.js
 
 install_configuration:
-	rm -rf /etc/nginx/conf.d /etc/logstash/conf.d /usr/share/nginx/html
-	ln -sf $(shell pwd)/etc/nginx/conf.d /etc/nginx
-	ln -sf $(shell pwd)/etc/nginx/conf.d /etc/nginx
-	ln -sf $(shell pwd)/etc/nginx/html /usr/share/nginx
-	ln -sf $(shell pwd)/etc/logstash /etc/logstash/conf.d
-	ln -sf $(shell pwd)/etc/ssl /etc/logstash/ssl
-	ln -sf conf.d/patterns.d /etc/logstash
-	ln -sf $(shell pwd)/etc/elasticsearch/config/elasticsearch.yml /etc/elasticsearch/
-	ln -sf $(shell pwd)/etc/default/elasticsearch /etc/default/elasticsearch
 	echo 127.0.0.1 logstash.local elasticsearch.local kibana.local >> /etc/hosts
 
